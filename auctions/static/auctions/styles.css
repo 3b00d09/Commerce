@@ -1,0 +1,104 @@
+body {
+    padding: 10px;
+    overflow-x: hidden;
+}
+
+.row{
+    margin-left: .5rem;
+}
+
+.col-md-4 > a > img{
+    width: 60%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.col-md-6 > img{
+    width:60%;
+}
+
+#bid{
+    width:8vw;
+    height:6vh;
+    font-size: large;
+}
+
+#comment{
+    width:30vw;
+    font-size: large;
+    vertical-align: middle;
+}
+
+#label{
+    display: inline-block;
+}
+
+.alert-error{
+    color: #721c24;
+    background-color: #f8d7da;
+    border-color: #f5c6cb;
+    margin: 0.5rem;
+}
+
+.form-control{
+    width:60vw;
+}
+
+.image-upload-field{
+    width:17vw;
+}
+
+.bid-field{
+    width:8vw;
+}
+
+.description-field{
+    resize: none;
+    height: 20vh !important;
+}
+
+
+@media (max-width:768px){
+    .index-page > img{
+        text-align: center;
+    }
+    .col-md-6{
+        text-align: center;
+    }
+    .col-md-4{
+        text-align: center;
+    }
+    .watchlist-image{
+        margin-left: auto;
+        margin-right: auto;
+        display: block;
+    }
+}
+
+h4{
+    margin: 12px 0px 12px;
+}
+
+.comment-form{
+    /* todo */
+    margin: 12px;
+    width:80%;
+    vertical-align: middle;
+    resize: none;
+}
+
+
+ul{
+    list-style: none;
+}
+
+.comment-author{
+    margin-left: 12px; 
+    background-color: beige; 
+    padding: 12px;
+}
+
+.comment-content{
+    margin: 12px 36px;
+}

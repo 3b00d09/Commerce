@@ -1,0 +1,22 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+<center>
+ <form action="{% url 'commerce:create' %}" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="Submit" class = "btn btn-secondary">
+</form> 
+
+{% if messages %}
+{% for message in messages %}
+
+<div class="alert alert-{{ message.tags }}">
+       {{ message }}
+</div>
+
+{% endfor %}
+{% endif %}
+</center>
+
+{% endblock %}

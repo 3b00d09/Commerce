@@ -1,0 +1,104 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+
+<div class = "container">
+    <div class="row">
+        <div class = "col-md-6"> 
+            <h2>{{listing.name}}</h2>
+            {% if listing.image %}
+                <img src = "{{listing.image.url}}">
+            {% else %}
+            <img src = "/media/images/no image found.jpg">
+            {% endif %}
+        </div>
+        <div class = "col-md-6" style = "text-align: center;">
+            <h4>Item description</h4>
+            <p>{{listing.description}}</p>
+
+            <h4>Seller</h4>
+            {% if listing.seller == current_user %}
+                <p>Your Item</p>
+                {% if listing.state != "Closed" %}
+                    <form action ="{% url 'commerce:close' listing.id%}" method ="post">
+                        {% csrf_token %}
+                        <input type ="submit" value="Close Listing" class = "btn btn-secondary">
+                    </form>
+                {% endif %}
+
+            {% else %}
+                <p>{{listing.seller}}</p>
+            {% endif %}
+
+            {% if listing.state == "Closed" %}
+                    {% if listing.highest_bidder %} 
+                        <h4>This listing has been closed. Auction won by {{listing.highest_bidder}}</h4>
+                    {% else %} 
+                        <h4>This listings has been closed.</h4>
+                    {% endif %}
+            {% else %}
+                {% if bids %}
+                    <h4>Current Highest Bid</h4>
+                    <p>{{bids.price}}$ by {{bids.bidder}}</p>
+
+                {% else %}
+                    <h4>Starting Price</h4>
+                    <p>{{listing.starting_price}}$</p>
+                {% endif %}
+
+                <form action="{% url 'commerce:submit_bid' listing.id %}" method="post">
+                    {% csrf_token %}
+                    {{ bid_form.as_p }}
+                    <input type="submit" value="Submit" class = "btn btn-secondary">
+                </form>
+            {% endif %}
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        </div>
+    </div>
+</div>
+        {% if in_watchlist == True %}
+        <div>
+            <form action ="{% url 'commerce:remove_watchlist' listing.id%}" method ="post">
+                {% csrf_token %}
+                <input type ="submit" value="Remove from Watchlist" class = "btn btn-secondary">
+            </form>
+        </div>
+        {% else %} 
+            <div>
+                <form action ="{% url 'commerce:add_watchlist' listing.id%}" method ="post">
+                    {% csrf_token %}
+                    <input type ="submit" value="Add to Watchlist" class = "btn btn-secondary">
+                </form>
+            </div>
+        {% endif %}
+
+
+<h4 style = "padding: 12px;">Comments</h4>
+{% if comments %}
+    {% for comments in comments %}
+        <p class="comment-author">{{comments.author}} on {{comments.time}}</p>
+        <p class="comment-content">{{comments.comment}}</p>
+    {% endfor %}
+
+{% else %}
+
+    This post has no comments.
+
+{% endif %}
+<div class = "comment-form">
+    <form action="{% url 'commerce:submit_comment' listing.id%}" method="post">
+        {% csrf_token %}
+        {{ comment_form.as_p}}
+        <input type="submit" value="Submit" class = "btn btn-secondary">
+    </form>
+</div>
+
+
+
+{% endblock %}

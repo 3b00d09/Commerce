@@ -1,0 +1,38 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    <h2>Active Listings</h2>
+    <h5>Filter by category:</h5>
+    <form action="{% url 'commerce:filter'%}" method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value="Filter" class = "btn btn-secondary">
+    </form>
+    <br>
+    <div class ="row index-page">
+    {% for listings in listings %}
+        {% if listings.state != "Closed" %} 
+            <div class ="col-md-4">
+            <p style = "font-size: large;"><a href="{% url 'commerce:view_listing' listings.id %}">{{listings.name}}</a></p>
+            {% if listings.image %}
+                <a href="{% url 'commerce:view_listing' listings.id %}"><img class = "watchlist-image" src = "{{listings.image.url}}"></a>
+            {% else %}
+                <a href="{% url 'commerce:view_listing' listings.id %}"><img class = "watchlist-image" src = "/media/images/no image found.jpg"></a>
+            {% endif %}
+            <ul>
+                <li>{{listings.seller}}</li>
+                <li>{{listings.description}}</li>
+                {% if listings.current_price %} 
+                    {{listings.current_price}}$
+                {% else %} 
+                    <li>Price: {{listings.starting_price}}$</li>
+                {% endif %}
+            </ul>
+            </div>
+            <!-- empty col to space things out a little -->
+            <div class = "col-md-2"></div>
+        {% endif %}
+    {% endfor %}
+    </div>
+
+{% endblock %}
